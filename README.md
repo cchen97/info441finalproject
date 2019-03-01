@@ -16,7 +16,7 @@ Priority | User | Description
 P0 | Pet Owner | As a user, I want to see a list of pets that are the same breed as mine
 P0 | Pet Owner | As a user, I want to upload a profile for my pet
 P0 | Pet Owner | As a user, I want to communicate/chat with the other pet owner who is interested in my pet
-P0 | Pet Owner | As a user, I want to “like”/ choose a potential mate for my pet
+P0 | Pet Owner | As a user, I want to like/choose a potential mate for my pet
 P0 | Pet Owner | As a user, I want to be notified if someone else liked my pet and want to chat with me
 
 ## Client
@@ -49,7 +49,7 @@ MongoDB document storage. The document model includes: * id (ObjectID) * name (S
 
 ## API Reference
 
-### Post v1/users
+### Post /v1/users
 Posts a new user using the JSON obejct in the request body. The Content-Type header must be application/json. The request body is a jsonobject with the new user's email, password, passwordConf, and displayName. To be a valid new user,password and passwordConf must match, email must not be taken by another user, and displayName must notbe empty. A copy of the created user is sent as a response.
 
 * 415 Content-Type does not start with application/json
