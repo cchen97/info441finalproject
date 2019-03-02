@@ -9,7 +9,7 @@ These days, most apps are marketed as “Tinder for ____”: there’s a Tinder 
 Our model is of something similar to Tinder but tailored to pets and pet owners. Users are able to profile for their pet that features photos, videos, and their pet’s “habits”.  The application will then provide them with pictures of pets who are the same breed. The users could read more information about the pet, and those interested can then swipe right. Once a match has happened, the two pet owners could chat with each other more in-depth about their pets or even set up a date. 
 
 ## Architecture
-![db](db.png)
+![architecture](architecture.jpeg)
 ## User Stories
 Priority | User | Description
 --- | --- | ---
