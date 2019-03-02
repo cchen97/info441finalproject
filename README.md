@@ -1,12 +1,12 @@
 # Petinder
 
-Petinder is a social search web application that allows pet owners to like or dislike other pets, and allows pet owners to chat if both parties liked each other’s pet in the application. The app will be used as a pet dating site.
+Petinder is a social search web application that allows pet owners to like or dislike other pets, and allows pet owners to chat if both parties liked each other’s pet in the application. The app will be used as a pet's dating site.
 
 ## Why
-These days, most apps are marketed as “Tinder for ____”: there’s a Tinder for jobs, a Tinder for Jews, and a Tinder for people who are literally two feet away from each other. But there is no Tinder for cats and dogs in the market just yet. The current practices for finding a mate for pets are usually through asking neighbors or friends if they own, or have seen a dog of the same breed that wants to mate. There are also some, but not very popular, websites like thedogmates.com which claims to offer a wide choice of available mates. Finding mates for pets, especially pets that are not dogs, by using the style of Tinder has not yet been developed. Our goal is to create a way for pet owners to find mates for their dogs to breed with as well as also to build a legitimate social network for animals and their humans.  Our small web application would be perfect for pet owners who want an easy, fun, yet serious way to find, not just a mate, but the perfect mate for their loving companion animals.
+These days, most apps are marketed as “Tinder for ____”: there is a Tinder for jobs, a Tinder for Jews, and a Tinder for people who are literally two feet away from each other. But there is no Tinder for cats and dogs in the market just yet. The current practices for finding a mate for pets are usually through asking neighbors or friends if they own, or have seen a dog of the same breed that wants to mate. There are some websites like [thedogmates.com] which claims to offer a wide choice of available mates, but they are not very popular. Finding mates for pets, especially pets that are not dogs, using the style of Tinder has not yet been developed. Our goal is to create a way for pet owners to find mates for their pets to breed with as well as also to build a legitimate social network for animals and their humans. Our small web application would be perfect for pet owners who want an easy, fun, yet serious way to find, not just a mate, but the perfect mate for their loving companion animals.
 
 ## What
-Our model is of something similar to Tinder but tailored to pets and pet owners. Users are able to profile for their pet that features photos, videos, and their pet’s “habits”.  The application will then provide them with pictures of pets who are the same breed. The users could read more information about the pet, and those interested can then like it. Once a match has happened, the two pet owners could chat with each other more in-depth about their pets or even set up a date. 
+Our model is of something similar to Tinder but tailored to pets and pet owners. Users are able to profile for their pet that features photos, videos, and their pet’s “habits”.  The application will then provide them with pictures of pets who are the same breed. The users can read more information about the pet, and those interested can then like it. Once a match has happened, the two pet owners can chat with each other more in depth about their pets or even set up a date. 
 
 ## Architecture
 ![architecture](architecture.jpeg)
@@ -21,62 +21,7 @@ P0 | Pet Owner | As a user, I want to like/choose a potential mate for my pet
 P0 | Pet Owner | As a user, I want to be notified if someone else liked my pet and want to chat with me
 
 ## Client
-A simple web application that showing a list of pets and chat messages
-
-## Database Schema
-
-### Users
-
-```sql
-create table if not exists users (
-    id int not null auto_increment primary key,
-    email varchar(128) not null unique,
-    username varchar(255) not null unique,
-    passhash binary(60) not null,
-    firstname varchar(64) not null,
-    lastname varchar(128) not null,
-    photourl varchar(2083) not null 
-);
-```
-
-### Sessions
-Simple redis key-value store, associating session IDs with session stores, which include:
-
-* Session start time
-* User profile
-
-### Pets
-MongoDB pet storage. The pet model includes:
-
-* `id` (ObjectID)
-* `owner` (user)
-* `name` (String)
-* `gender` (String)
-* `age` (Number)
-* `breed` (String)
-* `city` (String)
-* `intro` (Automerge-compatible string)
-* `likeList` ([ObjectID])
-
-### Messages
-MongoDB message storage. The message model includes:
-
-* `id` (ObjectID)
-* `channelID` (ObjectId)
-* `body` (Automerge-compatible string) 
-* `creator` (User)
-* `editedAt` (datetime)
-* `createdAt` (datetime)
-
-### Channels
-MongoDB channel storage. The channel model includes:
-
-* `id` (ObjectID)
-* `name` (String)
-* `description` (String)
-* `members` ([userID])
-* `editedAt` (datetime)
-* `createdAt` (datetime)
+A simple web application showing a list of pets for potential matchings and chat messages after a match has occurred.
 
 ## API Reference
 
@@ -223,3 +168,60 @@ Deletes the pet with the associated petID from the like list of the pet that own
 * 500: Internal server error.
 * 200: Status OK
 * 401: no X-User header in the request
+
+## Appendix
+
+### Database Schema
+
+#### Users
+
+```sql
+create table if not exists users (
+    id int not null auto_increment primary key,
+    email varchar(128) not null unique,
+    username varchar(255) not null unique,
+    passhash binary(60) not null,
+    firstname varchar(64) not null,
+    lastname varchar(128) not null,
+    photourl varchar(2083) not null 
+);
+```
+
+#### Sessions
+Simple redis key-value store, associating session IDs with session stores, which include:
+
+* Session start time
+* User profile
+
+#### Pets
+MongoDB pet storage. The pet model includes:
+
+* `id` (Number)
+* `owner` (User Object)
+* `name` (String)
+* `gender` (String)
+* `age` (Number)
+* `breed` (String)
+* `city` (String)
+* `intro` (String)
+* `likeList` ([Pet Object])
+
+#### Messages
+MongoDB message storage. The message model includes:
+
+* `id` (Number)
+* `channelID` (ObjectId)
+* `body` (String) 
+* `creator` (User Object)
+* `editedAt` (Date)
+* `createdAt` (Date)
+
+#### Channels
+MongoDB channel storage. The channel model includes:
+
+* `id` (Number)
+* `name` (String)
+* `description` (String)
+* `members` ([User Object])
+* `editedAt` (Date)
+* `createdAt` (Date)
