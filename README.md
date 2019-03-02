@@ -12,13 +12,13 @@ Our model is of something similar to Tinder but tailored to pets and pet owners.
 ![architecture](architecture.jpeg)
 
 ## User Stories
-Priority | User | Description
---- | --- | ---
-P0 | Pet Owner | As a user, I want to see a list of pets that are the same breed as mine
-P0 | Pet Owner | As a user, I want to upload a profile for my pet
-P0 | Pet Owner | As a user, I want to communicate/chat with the other pet owner who is interested in my pet
-P0 | Pet Owner | As a user, I want to like/choose a potential mate for my pet
-P0 | Pet Owner | As a user, I want to be notified if someone else liked my pet and want to chat with me
+Priority | User | Description | Implementation
+--- | --- | --- | ---
+P0 | Pet owner | As a user, I want to see a list of pets that are the same breed as mine | Upon receiving a **GET request** to /v1/matching, the matching microservice shows a list of pets with the specified breed for matching.
+P0 | Pet owner | As a user, I want to upload a profile for my pet | Upon receiving a **POST request** to /v1/pet, the pet microservice creates a new pet profile for the current user and stores it in the pet database.
+P0 | Pet owner | As a user, I want to communicate/chat with the other pet owner who is interested in my pet | Upon receiving a **POST request** to /v1/channels/, the messaging microservice creates a new channel between the two pet owners.
+P0 | Pet owner | As a user, I want to like/choose a potential mate for my pet | Upon receiving a **POST request** to /v1/matching/{petID}, the matching microservice stores the pet in the like list of the current user's pet.
+P0 | Pet owner | As a user, I want to be notified if someone liked my pet and want to chat with me | Client UI will show the open **websockets** connected to the current user's pet.
 
 ## Client
 A simple web application showing a list of pets for potential matchings and chat messages after a match has occurred.
