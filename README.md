@@ -1,15 +1,16 @@
-# info441finalproject
+# Petinder
 
-Petinder is a social search mobile app that allows pet owners to like or dislike other pets, and allows pet owners to chat if both parties liked each other’s pet in the app. The app will be used as a pet dating site.
+Petinder is a social search web application that allows pet owners to like or dislike other pets, and allows pet owners to chat if both parties liked each other’s pet in the application. The app will be used as a pet dating site.
 
 ## Why
-These days, most apps are marketed as “Tinder for ____”: there’s a Tinder for jobs, a Tinder for Jews, and a Tinder for people who are literally two feet away from each other. But there is no Tinder for cats and dogs in the market just yet. The current practices for finding a mate for pets are usually through asking neighbors or friends if they own, or have seen a dog of the same breed that wants to mate. There are also some, but not very popular, websites like thedogmates.com which claims to offer a wide choice of available mates, finding mates for pets and especially pets that are not dogs by using mobile phones has not yet been developed. Our goal is to create a way for pet owners to find mates for their dogs to breed with as well as also to build a legitimate social network for animals and their humans.  Our small web application would be perfect for pet owners who want an easy, fun, and serious way to find, not just a mate, but the perfect mate for their loving companion animals.
+These days, most apps are marketed as “Tinder for ____”: there’s a Tinder for jobs, a Tinder for Jews, and a Tinder for people who are literally two feet away from each other. But there is no Tinder for cats and dogs in the market just yet. The current practices for finding a mate for pets are usually through asking neighbors or friends if they own, or have seen a dog of the same breed that wants to mate. There are also some, but not very popular, websites like thedogmates.com which claims to offer a wide choice of available mates. Finding mates for pets, especially pets that are not dogs, by using the style of Tinder has not yet been developed. Our goal is to create a way for pet owners to find mates for their dogs to breed with as well as also to build a legitimate social network for animals and their humans.  Our small web application would be perfect for pet owners who want an easy, fun, yet serious way to find, not just a mate, but the perfect mate for their loving companion animals.
 
 ## What
-Our model is of something similar to Tinder but tailored to pets and pet owners. Users are able to profile for their pet that features photos, videos, and their pet’s “habits”.  The application will then provide them with pictures of pets who are the same breed. The users could read more information about the pet, and those interested can then swipe right. Once a match has happened, the two pet owners could chat with each other more in-depth about their pets or even set up a date. 
+Our model is of something similar to Tinder but tailored to pets and pet owners. Users are able to profile for their pet that features photos, videos, and their pet’s “habits”.  The application will then provide them with pictures of pets who are the same breed. The users could read more information about the pet, and those interested can then like it. Once a match has happened, the two pet owners could chat with each other more in-depth about their pets or even set up a date. 
 
 ## Architecture
 ![architecture](architecture.jpeg)
+
 ## User Stories
 Priority | User | Description
 --- | --- | ---
@@ -31,7 +32,7 @@ create table if not exists users (
     id int not null auto_increment primary key,
     email varchar(128) not null unique,
     username varchar(255) not null unique,
-    passhash BINARY(60) not null,
+    passhash binary(60) not null,
     firstname varchar(64) not null,
     lastname varchar(128) not null,
     photourl varchar(2083) not null 
@@ -39,17 +40,47 @@ create table if not exists users (
 ```
 
 ### Sessions
-Simple redis key-value store, associating session IDs with session stores, which include: * Session start time * User profile
+Simple redis key-value store, associating session IDs with session stores, which include:
+
+* Session start time
+* User profile
+
 ### Pets
-MongoDB document storage. The document model includes: * id (ObjectID) * owner (user) * name (String) * gender (String) * age (Number) * breed (String) * city (String) * intro (Automerge-compatible string), likelist * ([ObjectID])
+MongoDB pet storage. The pet model includes:
+
+* `id` (ObjectID)
+* `owner` (user)
+* `name` (String)
+* `gender` (String)
+* `age` (Number)
+* `breed` (String)
+* `city` (String)
+* `intro` (Automerge-compatible string)
+* `likeList` ([ObjectID])
+
 ### Messages
-MongoDB document storage. The document model includes: * id (ObjectID) * channel_ID (ObjectId) * body (Automerge-compatible string) * creator (User) * lastedited (datetime) * createdAt(datetime)
+MongoDB message storage. The message model includes:
+
+* `id` (ObjectID)
+* `channelID` (ObjectId)
+* `body` (Automerge-compatible string) 
+* `creator` (User)
+* `editedAt` (datetime)
+* `createdAt` (datetime)
+
 ### Channels
-MongoDB document storage. The document model includes: * id (ObjectID) * name (String) * description (String)* member ([user_id])*lastedited (datetime)*createdAt (datetime)
+MongoDB channel storage. The channel model includes:
+
+* `id` (ObjectID)
+* `name` (String)
+* `description` (String)
+* `members` ([userID])
+* `editedAt` (datetime)
+* `createdAt` (datetime)
 
 ## API Reference
 
-### Post /v1/users
+### POST /v1/users
 Posts a new user using the JSON obejct in the request body. The Content-Type header must be application/json. The request body is a jsonobject with the new user's email, password, passwordConf, and displayName. To be a valid new user,password and passwordConf must match, email must not be taken by another user, and displayName must notbe empty. A copy of the created user is sent as a response.
 
 * 415 Content-Type does not start with application/json
@@ -57,7 +88,7 @@ Posts a new user using the JSON obejct in the request body. The Content-Type hea
 * 405 Any other HTTP Method
 * 500 Internal server error
 
-### Get /v1/users/:id
+### GET /v1/users/:id
 Gets a the user with the given id, or gets the currently logged in user if id is me. The user must be logged in to perform thisaction. A copy of the given user is sent as a response.
 
 * 415 Content-Type does not start with application/json
